@@ -9,5 +9,6 @@ export default {
   password: "123",
   debug: !__production__,
   baseDir: __dirname,
-  // clientUrl: "//localhost:8080",
-}
+} as const;
+
+// as const fixxed the type import issue in index.ts for mikroConfig variable
