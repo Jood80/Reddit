@@ -11,12 +11,16 @@ const main = async () => {
   await orm.getMigrator().up();
 
   // run sql
-  const post = orm.em.create(Post, { title: "This is my new post" });
+  // const post = orm.em.create(Post, { title: "This is my new post" });
 
   // insert post into db
-  await orm.em.persistAndFlush(post);
+  // await orm.em.persistAndFlush(post);
 
   // await orm.em.nativeInsert(Post, { title: "This is my new post" });
+  
+  //get all posts
+  const posts = await orm.em.find(Post, {});
+  console.log("_________posts__________", posts);
 };
 
 main().catch((err) => {
