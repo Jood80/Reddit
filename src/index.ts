@@ -3,6 +3,9 @@ import { __production__ } from "./constants";
 import { Post } from "./entities/Post";
 import mikroConfig from "./mikro-orm.config";
 import express from 'express'
+import { ApolloServer } from 'apollo-server-express'
+import { buildSchema } from 'type-graphql'
+import { HelloResolver } from "./resolvers/hello";
 
 const main = async () => {
   //connect to db
@@ -12,15 +15,22 @@ const main = async () => {
   await orm.getMigrator().up();
 
   const app = express();
-  // by using _ instead of req, we are ignoring its variable
-  app.get('/',(_, res)=>{
-    res.send("hello here")
+
+  const apolloServer = new ApolloServer({
+    schema: await buildSchema({
+      resolvers: [HelloResolver],
+      validate: false
+    })
+  });
+
+  //create a graphql endpoint on express
+  apolloServer.applyMiddleware({app})
+
+  app.listen(5000, () => {
+    console.log('server has started on port 5000');
   })
 
-  app.listen(5000,()=>{
-    console.log('server has started on port 5000');
-    
-  } )
+
 
   // run sql
   // const post = orm.em.create(Post, { title: "This is my new post" });
