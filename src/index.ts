@@ -1,7 +1,6 @@
 import 'reflect-metadata';
 import { MikroORM } from "@mikro-orm/core";
 import { __production__ } from "./constants";
-import { Post } from "./entities/Post";
 import mikroConfig from "./mikro-orm.config";
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express'
@@ -32,17 +31,6 @@ const main = async () => {
   app.listen(5000, () => {
     console.log('server has started on port 5000');
   })
-
-
-
-  // run sql
-  // const post = orm.em.create(Post, { title: "This is my new post" });
-
-  // insert post into db
-  // await orm.em.persistAndFlush(post);
-
-  //get all posts
-  // const posts = await orm.em.find(Post, {});
 };
 
 main().catch((err) => {
