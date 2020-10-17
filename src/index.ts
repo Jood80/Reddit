@@ -7,19 +7,20 @@ import { ApolloServer } from 'apollo-server-express'
 import { buildSchema } from 'type-graphql'
 import { HelloResolver } from "./resolvers/hello";
 import { PostResolver } from "./resolvers/post";
+import { UserResolver } from './resolvers/user';
 
 const main = async () => {
   //connect to db
   const orm = await MikroORM.init(mikroConfig);
 
   // run migration at first
-  await orm.getMigrator().up();
+  await orm.getMigrator().up();  
 
   const app = express();
 
   const apolloServer = new ApolloServer({
     schema: await buildSchema({
-      resolvers: [HelloResolver, PostResolver],
+      resolvers: [HelloResolver,PostResolver, UserResolver],
       validate: false
     }), 
     context: () => ({ em: orm.em})
