@@ -26,7 +26,37 @@ export class PostResolver {
     @Ctx() ctx: MyContext): Promise<Post>{
       const post = ctx.em.create(Post, {title})
       await ctx.em.persistAndFlush(post)
-     return post
+      return post
+  }
+
+  @Mutation(() => Post, {nullable:true})
+  async updatePost(
+    @Arg("id") id: number,
+    @Arg("title", ()=>String,{nullable:true}) title: string,
+    @Ctx() ctx: MyContext): Promise<Post | null> {
+    
+      const post = await ctx.em.findOne(Post, {id});
+      if(!post){
+        return null;
+      }
+      if(typeof title !== 'undefined'){
+        post.title= title;
+        await ctx.em.persistAndFlush(post)
+      }
+     return post;
+  }
+
+  @Mutation(() => Boolean)
+  async deletePost(
+    @Arg("id") id: number,
+    @Ctx() ctx: MyContext): Promise<boolean> {
+    try{
+      await ctx.em.nativeDelete(Post, {id});
+    }
+    catch{
+      return false
+    }    
+   return true;
   }
 }
 //! Note: for the type of queries that's been declared in ts, there is no need to declare their types inside the query too as in line 18,25  
