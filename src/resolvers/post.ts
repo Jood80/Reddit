@@ -15,17 +15,18 @@ export class PostResolver {
 
   @Query(() => Post,{nullable:true} )
   post(
-    @Arg('id', () => Int) id: number,
+    @Arg('id') id: number,
     @Ctx() ctx: MyContext): Promise<Post| null>{
      return ctx.em.findOne(Post, {id});
   }
   // Mutation: is for update, insert, delete data
   @Mutation(() => Post)
   async createPost(
-    @Arg('title', () => String) title: string,
+    @Arg('title') title: string,
     @Ctx() ctx: MyContext): Promise<Post>{
       const post = ctx.em.create(Post, {title})
       await ctx.em.persistAndFlush(post)
      return post
   }
-}  
+}
+//! Note: for the type of queries that's been declared in ts, there is no need to declare their types inside the query too as in line 18,25  
