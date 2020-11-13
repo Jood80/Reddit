@@ -1,7 +1,7 @@
-import { Entity, PrimaryKey, Property } from "@mikro-orm/core";
-import { Field, ObjectType } from "type-graphql";
+import { Entity, PrimaryKey, Property } from '@mikro-orm/core';
+import { Field, ObjectType } from 'type-graphql';
 
-//db tabel
+// db tabel
 @ObjectType()
 @Entity()
 export class User {
@@ -9,19 +9,19 @@ export class User {
   @PrimaryKey()
   id!: number;
 
-  @Field(()=> String)
-  @Property({ type: "date"})
+  @Field(() => String)
+  @Property({ type: 'date' })
   createdAt = new Date();
 
-  //Hook:onUpdate
-  @Field(()=> String)
-  @Property({ type: "date", onUpdate: () => new Date() })
+  // Hook:onUpdate
+  @Field(() => String)
+  @Property({ type: 'date', onUpdate: () => new Date() })
   updatedAt = new Date();
 
   @Field()
-  @Property({ type: "text", unique:true })
+  @Property({ type: 'text', unique: true })
   username!: string;
 
-  @Property({ type: "text"})
+  @Property({ type: 'text' })
   password!: string;
 }
